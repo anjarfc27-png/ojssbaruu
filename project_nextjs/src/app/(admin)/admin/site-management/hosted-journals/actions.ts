@@ -60,7 +60,14 @@ const SECTION_SCHEMAS = {
   restrictBulkEmails: restrictSchema,
 } satisfies Record<keyof JournalSettings, z.ZodTypeAny>;
 
-const mergeSettings = (settings?: Partial<JournalSettings> | null): JournalSettings => ({
+type PartialSettingsInput = {
+  context?: Partial<JournalSettings["context"]>;
+  search?: Partial<JournalSettings["search"]>;
+  theme?: Partial<JournalSettings["theme"]>;
+  restrictBulkEmails?: Partial<JournalSettings["restrictBulkEmails"]>;
+} | null;
+
+const mergeSettings = (settings?: PartialSettingsInput): JournalSettings => ({
   context: { ...DEFAULT_JOURNAL_SETTINGS.context, ...(settings?.context ?? {}) },
   search: { ...DEFAULT_JOURNAL_SETTINGS.search, ...(settings?.search ?? {}) },
   theme: { ...DEFAULT_JOURNAL_SETTINGS.theme, ...(settings?.theme ?? {}) },
@@ -203,8 +210,9 @@ export async function updateJournalSettingsSection(
     };
 
     if (section === "context") {
-      updatePayload.title = parsed.data.name;
-      updatePayload.description = parsed.data.focusScope;
+      const ctx = parsed.data as z.infer<typeof contextSchema>;
+      updatePayload.title = ctx.name;
+      updatePayload.description = ctx.focusScope;
     }
 
     const supabase = getSupabaseAdminClient();

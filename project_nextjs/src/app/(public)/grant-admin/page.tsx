@@ -4,7 +4,7 @@ import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { grantSiteAdminForCurrentUser } from "@/features/auth/resolve-identity";
 
 export default async function GrantAdminPage() {
-  const supabase = createSupabaseServerClient();
+  const supabase = await createSupabaseServerClient();
   const { data } = await supabase.auth.getUser();
   const user = data.user;
   if (!user) {

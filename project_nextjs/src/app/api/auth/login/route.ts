@@ -88,7 +88,7 @@ function getRolePath(userGroupName: string): string {
   return rolePaths[userGroupName] || 'reader'
 }
 
-export async function POST(request: NextRequest) {
+export async function POST(request: NextRequest, { params }: { params: Promise<{}> }) {
   try {
     let email, password
     

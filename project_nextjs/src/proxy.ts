@@ -30,7 +30,7 @@ const roleRoutes = {
   'subscription-manager': ['/dashboard']
 }
 
-export async function middleware(request: NextRequest) {
+export default async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl
 
   // Allow login and auth API routes

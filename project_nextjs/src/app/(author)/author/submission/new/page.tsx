@@ -46,7 +46,7 @@ function NewSubmissionPage() {
         isCorresponding: true
       }
     ],
-    files: []
+    files: [] as File[]
   });
 
   const totalSteps = 5;

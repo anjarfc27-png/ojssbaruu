@@ -38,7 +38,7 @@ const FALLBACK_STATS: EditorDashboardStats = {
 
 export const getSessionUserId = cache(async () => {
   try {
-    const supabase = createSupabaseServerClient();
+    const supabase = await createSupabaseServerClient();
     const {
       data: { session },
     } = await supabase.auth.getSession();

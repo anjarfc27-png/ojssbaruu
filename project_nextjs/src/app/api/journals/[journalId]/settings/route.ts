@@ -1,17 +1,16 @@
 "use server";
 
 import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
 
 import { getSupabaseAdminClient } from "@/lib/supabase/admin";
 import type { JournalSettings } from "@/features/journals/types";
 import { JOURNAL_ROLE_OPTIONS } from "@/features/journals/types";
 
-type RouteParams = {
-  params: { journalId: string };
-};
+type RouteContext = { params: Promise<{ journalId: string }> };
 
-export async function GET(_request: Request, { params }: RouteParams) {
-  const journalId = params.journalId;
+export async function GET(_request: NextRequest, { params }: RouteContext) {
+  const journalId = (await params).journalId;
   if (!journalId) {
     return NextResponse.json({ ok: false, message: "Jurnal tidak ditemukan." }, { status: 400 });
   }
@@ -24,8 +23,8 @@ export async function GET(_request: Request, { params }: RouteParams) {
   }
 }
 
-export async function POST(request: Request, { params }: RouteParams) {
-  const journalId = params.journalId;
+export async function POST(request: NextRequest, { params }: RouteContext) {
+  const journalId = (await params).journalId;
   if (!journalId) {
     return NextResponse.json({ ok: false, message: "Jurnal tidak ditemukan." }, { status: 400 });
   }

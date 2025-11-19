@@ -170,7 +170,7 @@ function AdminUsers() {
               </Select>
             </div>
             <div className="flex items-end">
-              <Button variant="outline" className="w-full">
+              <Button variant="secondary" className="w-full">
                 <Filter className="h-4 w-4 mr-2" />
                 Reset Filters
               </Button>

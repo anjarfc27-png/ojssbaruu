@@ -1,10 +1,15 @@
 'use client'
 
 import { withAuth } from '@/lib/auth-client'
-import { redirect } from 'next/navigation'
+import { useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 
 function AuthorHomePage() {
-  redirect('/author/dashboard')
+  const router = useRouter()
+  useEffect(() => {
+    router.replace('/author/dashboard')
+  }, [router])
+  return null
 }
 
 export default withAuth(AuthorHomePage, 'author')

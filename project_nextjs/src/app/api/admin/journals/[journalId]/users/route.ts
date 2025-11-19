@@ -1,14 +1,15 @@
 import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
 import type { User } from "@supabase/supabase-js";
 
 import { getSupabaseAdminClient } from "@/lib/supabase/admin";
 import { JOURNAL_ROLE_OPTIONS } from "@/features/journals/types";
 
 export async function GET(
-  _request: Request,
-  { params }: { params: { journalId: string } },
+  _request: NextRequest,
+  { params }: { params: Promise<{ journalId: string }> },
 ) {
-  const journalId = params.journalId;
+  const journalId = (await params).journalId;
   if (!journalId) {
     return NextResponse.json({ ok: false, message: "Journal tidak ditemukan." }, { status: 400 });
   }
@@ -49,10 +50,10 @@ export async function GET(
 }
 
 export async function POST(
-  request: Request,
-  { params }: { params: { journalId: string } },
+  request: NextRequest,
+  { params }: { params: Promise<{ journalId: string }> },
 ) {
-  const journalId = params.journalId;
+  const journalId = (await params).journalId;
   if (!journalId) {
     return NextResponse.json({ ok: false, message: "Journal tidak ditemukan." }, { status: 400 });
   }
@@ -83,10 +84,10 @@ export async function POST(
 }
 
 export async function DELETE(
-  request: Request,
-  { params }: { params: { journalId: string } },
+  request: NextRequest,
+  { params }: { params: Promise<{ journalId: string }> },
 ) {
-  const journalId = params.journalId;
+  const journalId = (await params).journalId;
   if (!journalId) {
     return NextResponse.json({ ok: false, message: "Journal tidak ditemukan." }, { status: 400 });
   }

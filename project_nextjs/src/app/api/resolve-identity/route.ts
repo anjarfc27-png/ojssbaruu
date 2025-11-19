@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
 import { getSupabaseAdminClient } from "@/lib/supabase/admin";
 
-export async function POST(request: Request) {
+export async function POST(request: NextRequest, { params }: { params: Promise<{}> }) {
   const body = await request.json().catch(() => null) as { identifier?: string } | null;
   const identifier = body?.identifier?.trim();
   if (!identifier) {

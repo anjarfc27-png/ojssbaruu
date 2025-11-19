@@ -5,7 +5,7 @@ import { forwardRef } from "react";
 import { cn } from "@/lib/utils";
 
 type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
-  variant?: "primary" | "secondary" | "ghost" | "danger";
+  variant?: "primary" | "secondary" | "ghost" | "danger" | "outline";
   size?: "md" | "sm";
   loading?: boolean;
 };
@@ -32,6 +32,8 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         "bg-transparent text-[var(--primary)] hover:bg-[var(--surface-muted)]",
       danger:
         "bg-[var(--accent)] hover:bg-[#b03761] text-white focus-visible:outline-[var(--accent)]",
+      outline:
+        "border border-[var(--border)] bg-transparent text-[var(--foreground)] hover:bg-[var(--surface-muted)]",
     } as const;
 
     const sizes: Record<typeof size, string> = {

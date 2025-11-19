@@ -307,7 +307,7 @@ function AuthorDashboardPage() {
                   Continue working on your drafts
                 </CardDescription>
               </div>
-              <Button variant="outline" size="sm">
+              <Button variant="secondary" size="sm">
                 View All
               </Button>
             </div>
@@ -367,7 +367,7 @@ function AuthorDashboardPage() {
                 Latest updates on your submissions
               </CardDescription>
             </div>
-            <Button variant="outline" size="sm">
+            <Button variant="secondary" size="sm">
               View All
             </Button>
           </div>

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 
-export async function POST(request: NextRequest) {
+export async function POST(request: NextRequest, { params }: { params: Promise<{}> }) {
   try {
     const response = NextResponse.json({ message: 'Logged out successfully' })
 

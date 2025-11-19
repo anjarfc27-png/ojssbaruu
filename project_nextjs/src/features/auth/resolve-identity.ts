@@ -26,7 +26,7 @@ export async function resolveLoginIdentity(identifier: string): Promise<string |
 }
 
 export async function grantSiteAdminForCurrentUser(): Promise<{ ok: boolean; message: string }> {
-  const server = createSupabaseServerClient();
+  const server = await createSupabaseServerClient();
   const { data } = await server.auth.getUser();
   const user = data.user;
   if (!user) return { ok: false, message: "Pengguna belum login." };

@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { supabaseAdmin } from '@/lib/db'
 
-export async function GET(request: NextRequest) {
+export async function GET(request: NextRequest, { params }: { params: Promise<{}> }) {
   try {
     // Cek apakah journal default sudah ada
     const { data: existingJournal } = await supabaseAdmin

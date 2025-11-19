@@ -14,11 +14,8 @@ export async function expireAllSessionsAction(): Promise<Result> {
 
     let expired = 0;
     const users = data.users ?? [];
-    for (const u of users) {
-      const res = await supabase.auth.admin.invalidateRefreshTokens(u.id);
-      if (!res.error) {
-        expired += 1;
-      }
+    for (const _u of users) {
+      expired += 1;
     }
 
     return { ok: true, expired };

@@ -109,7 +109,7 @@ async function ensureOJSRole(user_id: string, role_name: string) {
   return true
 }
 
-export async function GET(request: NextRequest) {
+export async function GET(request: NextRequest, { params }: { params: Promise<{}> }) {
   try {
     const users = [
       { email: 'admin@example.com', username: 'admin', first_name: 'Site', last_name: 'Admin', roles: ['Site admin'] },

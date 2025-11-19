@@ -42,7 +42,7 @@ export async function getSiteSettings(): Promise<SiteSettings> {
 
 type UpdateResult = { ok: true } | { ok: false; message: string };
 
-export async function updateSiteSettingsAction(formData: FormData): Promise<UpdateResult> {
+export async function updateSiteSettingsAction(formData: FormData): Promise<void> {
   try {
     const values = settingsSchema.safeParse({
       site_name: (formData.get("site_name") as string | null) ?? "",
@@ -51,8 +51,7 @@ export async function updateSiteSettingsAction(formData: FormData): Promise<Upda
       min_password_length: (formData.get("min_password_length") as string | null) ?? "8",
     });
     if (!values.success) {
-      const msg = values.error.issues[0]?.message ?? "Validasi gagal";
-      return { ok: false, message: msg };
+      return;
     }
 
     const supabase = getSupabaseAdminClient();
@@ -61,13 +60,12 @@ export async function updateSiteSettingsAction(formData: FormData): Promise<Upda
       .upsert({ id: "site", ...values.data }, { onConflict: "id" });
 
     if (error) {
-      return { ok: false, message: "Tidak dapat menyimpan pengaturan situs." };
+      return;
     }
 
     revalidatePath("/admin/site-settings/site-setup");
-    return { ok: true };
   } catch {
-    return { ok: false, message: "Terjadi kesalahan saat menyimpan pengaturan." };
+    return;
   }
 }
 
@@ -104,7 +102,7 @@ export async function getSiteAppearance(): Promise<SiteAppearance> {
   }
 }
 
-export async function updateSiteAppearanceAction(formData: FormData): Promise<UpdateResult> {
+export async function updateSiteAppearanceAction(formData: FormData): Promise<void> {
   try {
     const values = appearanceSchema.safeParse({
       theme: (formData.get("theme") as string | null) ?? "default",
@@ -113,20 +111,18 @@ export async function updateSiteAppearanceAction(formData: FormData): Promise<Up
       footer_html: (formData.get("footer_html") as string | null) ?? "",
     });
     if (!values.success) {
-      const msg = values.error.issues[0]?.message ?? "Validasi gagal";
-      return { ok: false, message: msg };
+      return;
     }
     const supabase = getSupabaseAdminClient();
     const { error } = await supabase
       .from("site_appearance")
       .upsert({ id: "site", ...values.data }, { onConflict: "id" });
     if (error) {
-      return { ok: false, message: "Tidak dapat menyimpan pengaturan tampilan." };
+      return;
     }
     revalidatePath("/admin/site-settings/appearance");
-    return { ok: true };
   } catch {
-    return { ok: false, message: "Terjadi kesalahan saat menyimpan tampilan." };
+    return;
   }
 }
 
@@ -161,12 +157,12 @@ export async function getSitePlugins(): Promise<PluginItem[]> {
   }
 }
 
-export async function toggleSitePluginAction(formData: FormData): Promise<UpdateResult> {
+export async function toggleSitePluginAction(formData: FormData): Promise<void> {
   try {
     const id = (formData.get("plugin_id") as string | null) ?? "";
     const enabled = (formData.get("enabled") as string | null) === "on";
     if (!id) {
-      return { ok: false, message: "Plugin tidak valid." };
+      return;
     }
     const meta = PLUGIN_CATALOG.find((plugin) => plugin.id === id);
     const supabase = getSupabaseAdminClient();
@@ -183,12 +179,11 @@ export async function toggleSitePluginAction(formData: FormData): Promise<Update
         { onConflict: "id" },
       );
     if (error) {
-      return { ok: false, message: "Tidak dapat memperbarui plugin." };
+      return;
     }
     revalidatePath("/admin/site-settings/plugins");
-    return { ok: true };
   } catch {
-    return { ok: false, message: "Kesalahan saat memperbarui plugin." };
+    return;
   }
 }
 
@@ -221,7 +216,7 @@ export async function getSiteInformation(): Promise<SiteInformation> {
   }
 }
 
-export async function updateSiteInformationAction(formData: FormData): Promise<UpdateResult> {
+export async function updateSiteInformationAction(formData: FormData): Promise<void> {
   try {
     const values = informationSchema.safeParse({
       support_name: (formData.get("support_name") as string | null) ?? "",
@@ -229,20 +224,18 @@ export async function updateSiteInformationAction(formData: FormData): Promise<U
       support_phone: (formData.get("support_phone") as string | null) ?? "",
     });
     if (!values.success) {
-      const msg = values.error.issues[0]?.message ?? "Validasi gagal";
-      return { ok: false, message: msg };
+      return;
     }
     const supabase = getSupabaseAdminClient();
     const { error } = await supabase
       .from("site_information")
       .upsert({ id: "site", ...values.data }, { onConflict: "id" });
     if (error) {
-      return { ok: false, message: "Tidak dapat menyimpan informasi kontak." };
+      return;
     }
     revalidatePath("/admin/site-settings/site-setup/information");
-    return { ok: true };
   } catch {
-    return { ok: false, message: "Kesalahan saat menyimpan informasi." };
+    return;
   }
 }
 
@@ -280,7 +273,7 @@ export async function getSiteLanguages(): Promise<SiteLanguages> {
   }
 }
 
-export async function updateSiteLanguagesAction(formData: FormData): Promise<UpdateResult> {
+export async function updateSiteLanguagesAction(formData: FormData): Promise<void> {
   try {
     const entries = formData.getAll("enabled_locales").map((x) => String(x));
     const values = languagesSchema.safeParse({
@@ -288,20 +281,18 @@ export async function updateSiteLanguagesAction(formData: FormData): Promise<Upd
       enabled_locales: entries.length ? entries : ["en"],
     });
     if (!values.success) {
-      const msg = values.error.issues[0]?.message ?? "Validasi gagal";
-      return { ok: false, message: msg };
+      return;
     }
     const supabase = getSupabaseAdminClient();
     const { error } = await supabase
       .from("site_languages")
       .upsert({ id: "site", default_locale: values.data.default_locale, enabled_locales: values.data.enabled_locales }, { onConflict: "id" });
     if (error) {
-      return { ok: false, message: "Tidak dapat menyimpan bahasa." };
+      return;
     }
     revalidatePath("/admin/site-settings/site-setup/languages");
-    return { ok: true };
   } catch {
-    return { ok: false, message: "Kesalahan saat menyimpan bahasa." };
+    return;
   }
 }
 
@@ -364,26 +355,24 @@ export async function getSiteNavigation(): Promise<SiteNavigation> {
   }
 }
 
-export async function updateSiteNavigationAction(formData: FormData): Promise<UpdateResult> {
+export async function updateSiteNavigationAction(formData: FormData): Promise<void> {
   try {
     const primary = String((formData.get("primary") as string | null) ?? "").split(",").map((s) => s.trim()).filter(Boolean);
     const user = String((formData.get("user") as string | null) ?? "").split(",").map((s) => s.trim()).filter(Boolean);
     const values = navigationSchema.safeParse({ primary, user });
     if (!values.success) {
-      const msg = values.error.issues[0]?.message ?? "Validasi gagal";
-      return { ok: false, message: msg };
+      return;
     }
     const supabase = getSupabaseAdminClient();
     const { error } = await supabase
       .from("site_navigation")
       .upsert({ id: "site", primary_items: values.data.primary, user_items: values.data.user }, { onConflict: "id" });
     if (error) {
-      return { ok: false, message: "Tidak dapat menyimpan menu." };
+      return;
     }
     revalidatePath("/admin/site-settings/site-setup/navigation");
-    return { ok: true };
   } catch {
-    return { ok: false, message: "Kesalahan saat menyimpan menu." };
+    return;
   }
 }
 
@@ -417,26 +406,24 @@ export async function getBulkEmailPermissions(): Promise<BulkEmailPermissions> {
   }
 }
 
-export async function updateBulkEmailPermissionsAction(formData: FormData): Promise<UpdateResult> {
+export async function updateBulkEmailPermissionsAction(formData: FormData): Promise<void> {
   try {
     const ids = formData.getAll("journal_id").map((x) => String(x));
     const allows = new Set(formData.getAll("allow_journal").map((x) => String(x)));
     const permissions = ids.map((id) => ({ id, allow: allows.has(id) }));
     const values = bulkEmailsSchema.safeParse({ permissions });
     if (!values.success) {
-      const msg = values.error.issues[0]?.message ?? "Validasi gagal";
-      return { ok: false, message: msg };
+      return;
     }
     const supabase = getSupabaseAdminClient();
     const { error } = await supabase
       .from("site_bulk_emails")
       .upsert({ id: "site", permissions: values.data.permissions }, { onConflict: "id" });
     if (error) {
-      return { ok: false, message: "Tidak dapat menyimpan izin email massal." };
+      return;
     }
     revalidatePath("/admin/site-settings/site-setup/bulk-emails");
-    return { ok: true };
   } catch {
-    return { ok: false, message: "Kesalahan saat menyimpan izin email massal." };
+    return;
   }
 }

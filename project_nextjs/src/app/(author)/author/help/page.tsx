@@ -135,9 +135,9 @@ function AuthorHelp() {
           <CardTitle>Frequently Asked Questions</CardTitle>
         </CardHeader>
         <CardContent>
-          <Accordion type="single" collapsible className="w-full">
+          <Accordion>
             {faqs.map((faq, index) => (
-              <AccordionItem key={index} value={`item-${index}`}>
+              <AccordionItem key={index}>
                 <AccordionTrigger>{faq.question}</AccordionTrigger>
                 <AccordionContent>
                   <p className="text-sm text-gray-600">{faq.answer}</p>
