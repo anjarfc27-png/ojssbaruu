@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 
 function ReviewerHomePage() {
   redirect("/reviewer/dashboard");
+  return null;
 }
 
 export default withAuth(ReviewerHomePage, 'reviewer')
