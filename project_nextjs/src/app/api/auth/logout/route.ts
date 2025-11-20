@@ -9,10 +9,13 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
 
     return response
   } catch (error) {
-    console.error('Logout error:', error)
+    const message = error instanceof Error ? error.message : "Unknown error";
     return NextResponse.json(
-      { error: 'Internal server error' },
+      {
+        ok: false,
+        error: message
+      },
       { status: 500 }
-    )
+    );
   }
 }

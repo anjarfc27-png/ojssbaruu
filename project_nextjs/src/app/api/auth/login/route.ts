@@ -37,7 +37,8 @@ async function getUserFromAccounts(email: string) {
       password: data.password
     } : null
   } catch (error) {
-    console.error('Exception in getUserFromAccounts:', error)
+    const message = error instanceof Error ? error.message : "Unknown error";
+    console.error('Exception in getUserFromAccounts:', message);
     return null
   }
 }
@@ -66,7 +67,8 @@ async function getRolesFromAccountRoles(userId: string) {
       role_path: getRolePath(role.role_name)
     }))
   } catch (error) {
-    console.error('Exception in getRolesFromAccountRoles:', error)
+    const message = error instanceof Error ? error.message : "Unknown error";
+    console.error('Exception in getRolesFromAccountRoles:', message);
     return []
   }
 }
@@ -170,10 +172,13 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
 
     return response
   } catch (error) {
-    console.error('Login error:', error)
+    const message = error instanceof Error ? error.message : "Unknown error";
     return NextResponse.json(
-      { error: 'Internal server error' },
+      {
+        ok: false,
+        error: message
+      },
       { status: 500 }
-    )
+    );
   }
 }

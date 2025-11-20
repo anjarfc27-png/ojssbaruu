@@ -83,10 +83,13 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{}
     })
 
   } catch (error) {
-    console.error('Error in setup-journal:', error)
-    return NextResponse.json({ 
-      ok: false, 
-      error: error.message 
-    }, { status: 500 })
+    const message = error instanceof Error ? error.message : "Unknown error";
+    return NextResponse.json(
+      {
+        ok: false,
+        error: message
+      },
+      { status: 500 }
+    );
   }
 }

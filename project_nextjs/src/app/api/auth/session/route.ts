@@ -14,10 +14,13 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{}
 
     return NextResponse.json({ user })
   } catch (error) {
-    console.error('Session check error:', error)
+    const message = error instanceof Error ? error.message : "Unknown error";
     return NextResponse.json(
-      { error: 'Internal server error' },
+      {
+        ok: false,
+        error: message
+      },
       { status: 500 }
-    )
+    );
   }
 }

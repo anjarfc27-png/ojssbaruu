@@ -44,7 +44,14 @@ export async function POST(request: Request, context: RouteParams) {
     const settings = await loadSettings(journalId);
     return NextResponse.json({ ok: true, settings });
   } catch (error) {
-    return NextResponse.json({ ok: false, message: error instanceof Error ? error.message : "Tidak dapat menyimpan pengaturan." }, { status: 500 });
+    const message = error instanceof Error ? error.message : "Unknown error";
+    return NextResponse.json(
+      {
+        ok: false,
+        error: message
+      },
+      { status: 500 }
+    );
   }
 }
 

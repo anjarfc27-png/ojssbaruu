@@ -146,7 +146,13 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{}
 
     return NextResponse.json({ ok: true, results })
   } catch (error) {
-    console.error('Error in test-ojs-users:', error)
-    return NextResponse.json({ ok: false, error: error.message }, { status: 500 })
+    const message = error instanceof Error ? error.message : "Unknown error";
+    return NextResponse.json(
+      {
+        ok: false,
+        error: message
+      },
+      { status: 500 }
+    );
   }
 }
