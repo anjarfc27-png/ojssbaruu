@@ -55,5 +55,31 @@ export const it = {
   systemInfo: en.systemInfo,
   languages: en.languages,
   messages: en.messages,
+  
+  // Editor Navigation
+  editor: {
+    navigation: {
+      submissions: 'Invii',
+      issues: 'Numeri',
+      announcements: 'Annunci',
+      settings: 'Impostazioni',
+      context: 'Contesto',
+      website: 'Sito Web',
+      workflow: 'Flusso di Lavoro',
+      distribution: 'Distribuzione',
+      access: 'Accesso',
+      usersRoles: 'Utenti e Ruoli',
+      tools: 'Strumenti',
+      statistics: 'Statistiche',
+      editorial: 'Editoriale',
+      publications: 'Pubblicazioni',
+      users: 'Utenti',
+      openJournalSystems: 'Sistemi di Riviste Aperte',
+      siteAdministration: 'Amministrazione Sito',
+      noNewNotifications: 'Nessuna nuova notifica',
+      logout: 'Esci',
+    },
+    settings: en.editor.settings,
+  },
 };
 

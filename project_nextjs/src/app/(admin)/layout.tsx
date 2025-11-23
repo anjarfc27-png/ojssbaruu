@@ -19,7 +19,8 @@ import {
   Home,
   LogOut,
   Bell,
-  User
+  User,
+  Server
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { hasRole } from "@/lib/auth";
@@ -100,6 +101,12 @@ export default function AdminLayout({
       current: pathname.startsWith("/admin/site-settings")
     },
     {
+      name: t('admin.administrativeFunctions'),
+      href: "/admin/system/system-information",
+      icon: Server,
+      current: pathname.startsWith("/admin/system")
+    },
+    {
       name: t('admin.statistics'),
       href: "/admin/statistics",
       icon: BarChart3,
@@ -112,6 +119,14 @@ export default function AdminLayout({
     { name: t('siteSettings.languages'), href: "/admin/site-settings/site-setup/languages" },
     { name: t('siteSettings.bulkEmails'), href: "/admin/site-settings/site-setup/bulk-emails" },
     { name: t('siteSettings.navigation'), href: "/admin/site-settings/site-setup/navigation" }
+  ];
+
+  const administrativeFunctionsSubmenu = [
+    { name: t('admin.systemInformation'), href: "/admin/system/system-information" },
+    { name: t('admin.expireUserSessions'), href: "/admin/system/expire-sessions" },
+    { name: t('admin.clearDataCaches'), href: "/admin/system/clear-data-caches" },
+    { name: t('admin.clearTemplateCache'), href: "/admin/system/clear-template-cache" },
+    { name: t('admin.clearScheduledTaskExecutionLogs'), href: "/admin/system/clear-scheduled-tasks" }
   ];
 
   // Proteksi role - hanya admin yang bisa akses area ini
@@ -332,6 +347,25 @@ export default function AdminLayout({
               {pathname.startsWith("/admin/site-settings") && (
                 <div className="ml-8 mt-2 space-y-1">
                   {siteSettingsSubmenu.map((subItem) => (
+                    <Link
+                      key={subItem.name}
+                      href={subItem.href}
+                      className={`block px-3 py-2 rounded-md text-sm transition-colors ${
+                        pathname === subItem.href
+                          ? 'bg-white bg-opacity-15 text-white'
+                          : 'text-gray-300 hover:bg-white hover:bg-opacity-10 hover:text-white'
+                      }`}
+                    >
+                      {subItem.name}
+                    </Link>
+                  ))}
+                </div>
+              )}
+              
+              {/* Administrative Functions Submenu */}
+              {pathname.startsWith("/admin/system") && (
+                <div className="ml-8 mt-2 space-y-1">
+                  {administrativeFunctionsSubmenu.map((subItem) => (
                     <Link
                       key={subItem.name}
                       href={subItem.href}

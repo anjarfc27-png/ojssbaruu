@@ -9,8 +9,10 @@ import { PkpTable, PkpTableHeader, PkpTableRow, PkpTableHead, PkpTableCell } fro
 import { DUMMY_USERS, DUMMY_ROLES } from "@/features/editor/settings-dummy-data";
 import { USE_DUMMY } from "@/lib/dummy";
 import { useJournalSettings, useMigrateLocalStorageToDatabase } from "@/features/editor/hooks/useJournalSettings";
+import { useI18n } from "@/contexts/I18nContext";
 
 export default function SettingsAccessPage() {
+  const { t } = useI18n();
   // Database integration
   const accessSettings = useJournalSettings({
     section: "access",
@@ -127,7 +129,7 @@ export default function SettingsAccessPage() {
             lineHeight: "2.25rem",
             color: "#002C40",
           }}>
-            Settings • Access
+            {t('editor.settings.settingsTitle')} • {t('editor.settings.access.title')}
           </h1>
           <p style={{
             fontSize: "0.875rem",
@@ -469,7 +471,7 @@ export default function SettingsAccessPage() {
                   disabled={accessSettings.loading}
                   loading={accessSettings.loading}
                 >
-                  {accessSettings.loading ? "Saving..." : "Save"}
+                  {accessSettings.loading ? t('editor.settings.saving') : t('editor.settings.save')}
                 </PkpButton>
               </div>
             </div>

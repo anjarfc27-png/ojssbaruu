@@ -11,12 +11,15 @@ import { useAuth } from "@/contexts/AuthContext";
 import { Dropdown, DropdownItem, DropdownSection } from "@/components/ui/dropdown";
 import { useSupabase } from "@/providers/supabase-provider";
 import { getRedirectPathByRole } from "@/lib/auth-redirect";
+import { LanguageSwitcher } from "@/components/admin/language-switcher";
+import { useI18n } from "@/contexts/I18nContext";
 
 type Props = {
   children: ReactNode;
 };
 
 export default function EditorLayout({ children }: Props) {
+  const { t } = useI18n();
   const router = useRouter();
   const pathname = usePathname();
   const { user, loading, logout } = useAuth();
@@ -127,7 +130,7 @@ export default function EditorLayout({ children }: Props) {
               button={
                 <div className="flex items-center gap-2 cursor-pointer hover:opacity-80 transition-opacity">
                   <span className="text-white text-base font-medium" style={{fontSize: '0.9375rem', fontWeight: '500'}}>
-                    Open Journal Systems
+                    {t('editor.navigation.openJournalSystems')}
                   </span>
                   <ChevronDown className="h-4 w-4 text-white" style={{width: '16px', height: '16px'}} />
                 </div>
@@ -136,7 +139,7 @@ export default function EditorLayout({ children }: Props) {
             >
               <DropdownSection>
                 <DropdownItem href="/admin" icon={<Home className="h-4 w-4" />}>
-                  Site Administration
+                  {t('editor.navigation.siteAdministration')}
                 </DropdownItem>
               </DropdownSection>
               {journals.length > 0 && (
@@ -155,8 +158,11 @@ export default function EditorLayout({ children }: Props) {
             </Dropdown>
           </div>
 
-          {/* Right: Bell and User */}
+          {/* Right: Language, Bell and User */}
           <div className="flex items-center gap-6">
+            {/* Language */}
+            <LanguageSwitcher />
+
             {/* Bell Icon with Dropdown */}
             <Dropdown
               button={
@@ -168,7 +174,7 @@ export default function EditorLayout({ children }: Props) {
             >
               <DropdownSection>
                 <DropdownItem href="#" icon={<Bell className="h-4 w-4" />}>
-                  No new notifications
+                  {t('editor.navigation.noNewNotifications')}
                 </DropdownItem>
               </DropdownSection>
             </Dropdown>
@@ -199,7 +205,7 @@ export default function EditorLayout({ children }: Props) {
                   }}
                   icon={<LogOut className="h-4 w-4" />}
                 >
-                  Logout
+                  {t('editor.navigation.logout')}
                 </DropdownItem>
               </DropdownSection>
             </Dropdown>
@@ -314,7 +320,7 @@ export default function EditorLayout({ children }: Props) {
           <div
             className="pkp_structure_content"
             style={{
-              padding: '1.5rem', // Safe area padding - tidak terlalu mojok
+              padding: '0', // Padding di-handle di masing-masing page untuk kontrol lebih baik
               backgroundColor: '#eaedee',
               minHeight: '100%',
               width: '100%',

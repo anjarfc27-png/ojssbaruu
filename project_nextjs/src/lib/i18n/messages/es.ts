@@ -71,5 +71,31 @@ export const es = {
   
   // Form Messages - reusing structure from en
   messages: en.messages,
+  
+  // Editor Navigation
+  editor: {
+    navigation: {
+      submissions: 'Envíos',
+      issues: 'Números',
+      announcements: 'Anuncios',
+      settings: 'Configuración',
+      context: 'Contexto',
+      website: 'Sitio Web',
+      workflow: 'Flujo de Trabajo',
+      distribution: 'Distribución',
+      access: 'Acceso',
+      usersRoles: 'Usuarios y Roles',
+      tools: 'Herramientas',
+      statistics: 'Estadísticas',
+      editorial: 'Editorial',
+      publications: 'Publicaciones',
+      users: 'Usuarios',
+      openJournalSystems: 'Sistemas de Revistas Abiertas',
+      siteAdministration: 'Administración del Sitio',
+      noNewNotifications: 'No hay notificaciones nuevas',
+      logout: 'Cerrar Sesión',
+    },
+    settings: en.editor.settings,
+  },
 };
 

@@ -7,6 +7,7 @@ import { PkpInput } from "@/components/ui/pkp-input";
 import { PkpButton } from "@/components/ui/pkp-button";
 import { PkpTable, PkpTableHeader, PkpTableRow, PkpTableHead, PkpTableCell } from "@/components/ui/pkp-table";
 import { PkpSelect } from "@/components/ui/pkp-select";
+import { Dropdown, DropdownItem, DropdownSection } from "@/components/ui/dropdown";
 
 import { StageBadge } from "./stage-badge";
 import { StatusBadge } from "./status-badge";
@@ -55,23 +56,16 @@ export function SubmissionTable({ submissions, emptyMessage = "No submissions fo
   const availableStatuses: SubmissionStatus[] = ["queued", "in_review", "accepted", "declined", "scheduled", "published"];
 
   // Render table component - Simplified format: Number, Author(s), Title, Status, Dropdown
+  // Header row removed - no labels needed, just data rows
   const table = (
     <PkpTable>
-      <PkpTableHeader>
-        <PkpTableRow isHeader>
-          <PkpTableHead style={{ width: '60px' }}></PkpTableHead>
-          <PkpTableHead></PkpTableHead>
-          <PkpTableHead style={{ width: '120px' }}></PkpTableHead>
-          <PkpTableHead style={{ width: '60px' }}></PkpTableHead>
-        </PkpTableRow>
-      </PkpTableHeader>
       <tbody>
         {filteredSubmissions.map((submission, index) => (
           <PkpTableRow key={submission.id}>
-            <PkpTableCell style={{ width: '60px' }}>
-              <span className="label">{submission.id}</span>
+            <PkpTableCell style={{ width: '100px', paddingLeft: '2rem' }}>
+              <span className="label" style={{ fontSize: '0.875rem' }}>{submission.id}</span>
             </PkpTableCell>
-            <PkpTableCell>
+            <PkpTableCell style={{ paddingLeft: '2rem' }}>
               <div style={{ fontSize: '0.875rem', color: 'rgba(0, 0, 0, 0.54)', marginBottom: '0.125rem' }}>
                 {submission.author_name || "Author not specified"}
               </div>
@@ -85,27 +79,53 @@ export function SubmissionTable({ submissions, emptyMessage = "No submissions fo
                 </Link>
               </div>
             </PkpTableCell>
-            <PkpTableCell style={{ width: '120px' }}>
+            <PkpTableCell style={{ width: '140px', paddingLeft: '2rem' }}>
               <StageBadge stage={submission.stage} />
             </PkpTableCell>
-            <PkpTableCell style={{ textAlign: 'right', width: '60px' }}>
-              <button
-                type="button"
-                title="Actions"
-                style={{
-                  background: 'none',
-                  border: 'none',
-                  cursor: 'pointer',
-                  padding: '0.25rem',
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  color: 'rgba(0, 0, 0, 0.54)'
+            <PkpTableCell style={{ textAlign: 'right', width: '80px', paddingLeft: '2rem', paddingRight: '2rem', position: 'relative', zIndex: 1 }}>
+              <div 
+                style={{ 
+                  display: 'inline-flex', 
+                  justifyContent: 'flex-end', 
+                  position: 'relative', 
+                  zIndex: 10 
                 }}
-                className="hover:opacity-70"
+                onClick={(e) => {
+                  e.stopPropagation(); // Prevent row click
+                }}
               >
-                <ChevronDown className="h-4 w-4" style={{ width: '16px', height: '16px' }} />
-              </button>
+                <Dropdown
+                  align="right"
+                  button={
+                    <div
+                      style={{
+                        background: 'none',
+                        border: 'none',
+                        cursor: 'pointer',
+                        padding: '0.25rem',
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        color: 'rgba(0, 0, 0, 0.54)',
+                        position: 'relative',
+                        zIndex: 10
+                      }}
+                      className="hover:opacity-70"
+                    >
+                      <ChevronDown className="h-4 w-4" style={{ width: '16px', height: '16px' }} />
+                    </div>
+                  }
+                >
+                  <DropdownSection>
+                    <DropdownItem 
+                      href={`/editor/submissions/${submission.id}`}
+                      icon={<Eye className="h-4 w-4" />}
+                    >
+                      View Submission
+                    </DropdownItem>
+                  </DropdownSection>
+                </Dropdown>
+              </div>
             </PkpTableCell>
           </PkpTableRow>
         ))}
@@ -183,7 +203,7 @@ export function SubmissionTable({ submissions, emptyMessage = "No submissions fo
       {/* Header with Search and Filter - OJS 3.3 Exact Layout */}
       <div className="header" style={{
         position: 'relative',
-        padding: '0 1rem',
+        padding: '0 2rem', // Safe area padding - lebih besar
         borderBottom: '1px solid #e5e5e5',
         display: 'flex',
         justifyContent: 'space-between',
@@ -277,7 +297,7 @@ export function SubmissionTable({ submissions, emptyMessage = "No submissions fo
         <div style={{
           borderBottom: '1px solid #eee',
           backgroundColor: '#f8f9fa',
-          padding: '1rem',
+          padding: '1rem 2rem', // Safe area padding horizontal
           fontSize: '0.875rem'
         }}>
           <div style={{
@@ -467,12 +487,13 @@ export function SubmissionTable({ submissions, emptyMessage = "No submissions fo
           maxWidth: '100%',
           overflowX: 'auto',
           overflowY: 'visible',
+          padding: filteredSubmissions.length === 0 ? '0' : '1rem 0', // Safe area padding vertikal untuk tabel
         }}
       >
         {filteredSubmissions.length === 0 ? (
           <div
             style={{
-              padding: '2.5rem 1.5rem',
+              padding: '2.5rem 2rem',
               textAlign: 'center',
               fontSize: '0.875rem',
               color: 'rgba(0, 0, 0, 0.54)',

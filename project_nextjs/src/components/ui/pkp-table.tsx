@@ -15,26 +15,18 @@ type PkpTableProps = {
 
 export function PkpTable({ children, className, style }: PkpTableProps) {
   return (
-    <div
+    <table
+      className={cn("pkp_controllers_grid_table", className)}
       style={{
         width: "100%",
-        overflowX: "auto",
-        overflowY: "visible",
+        borderCollapse: "collapse",
+        tableLayout: "auto",
+        minWidth: "100%",
+        ...style,
       }}
     >
-      <table
-        className={cn("pkp_controllers_grid_table", className)}
-        style={{
-          width: "100%",
-          borderCollapse: "collapse",
-          tableLayout: "auto",
-          minWidth: "100%",
-          ...style,
-        }}
-      >
-        {children}
-      </table>
-    </div>
+      {children}
+    </table>
   );
 }
 
@@ -91,10 +83,10 @@ export function PkpTableHead({ children, className, style }: PkpTableHeadProps) 
     <th
       className={cn(className)}
       style={{
-        paddingTop: "0.5rem",
-        paddingBottom: "0.5rem",
-        paddingLeft: "1rem",
-        paddingRight: "1rem",
+        paddingTop: "1rem",
+        paddingBottom: "1rem",
+        paddingLeft: "2rem", // Safe area padding - lebih besar agar tidak mepet
+        paddingRight: "2rem", // Safe area padding - lebih besar agar tidak mepet
         textAlign: "left",
         fontSize: "0.75rem",
         lineHeight: "16px",
@@ -121,10 +113,10 @@ export function PkpTableCell({ children, className, style }: PkpTableCellProps) 
     <td
       className={cn(className)}
       style={{
-        paddingTop: "0.5rem",
-        paddingBottom: "calc(0.5rem - 1px)",
-        paddingLeft: "1rem",
-        paddingRight: "1rem",
+        paddingTop: "1rem",
+        paddingBottom: "calc(1rem - 1px)",
+        paddingLeft: "2rem", // Safe area padding - lebih besar agar tidak mepet
+        paddingRight: "2rem", // Safe area padding - lebih besar agar tidak mepet
         fontSize: "0.875rem",
         color: "rgba(0, 0, 0, 0.84)",
         verticalAlign: "top",

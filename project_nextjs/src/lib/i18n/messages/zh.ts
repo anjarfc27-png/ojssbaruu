@@ -55,5 +55,31 @@ export const zh = {
   systemInfo: en.systemInfo,
   languages: en.languages,
   messages: en.messages,
+  
+  // Editor Navigation
+  editor: {
+    navigation: {
+      submissions: '投稿',
+      issues: '期',
+      announcements: '公告',
+      settings: '设置',
+      context: '上下文',
+      website: '网站',
+      workflow: '工作流程',
+      distribution: '分发',
+      access: '访问',
+      usersRoles: '用户和角色',
+      tools: '工具',
+      statistics: '统计',
+      editorial: '编辑',
+      publications: '出版物',
+      users: '用户',
+      openJournalSystems: '开放期刊系统',
+      siteAdministration: '站点管理',
+      noNewNotifications: '没有新通知',
+      logout: '退出',
+    },
+    settings: en.editor.settings,
+  },
 };
 

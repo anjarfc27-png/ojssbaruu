@@ -55,5 +55,31 @@ export const vi = {
   systemInfo: en.systemInfo,
   languages: en.languages,
   messages: en.messages,
+  
+  // Editor Navigation
+  editor: {
+    navigation: {
+      submissions: 'Gửi bài',
+      issues: 'Số phát hành',
+      announcements: 'Thông báo',
+      settings: 'Cài đặt',
+      context: 'Bối cảnh',
+      website: 'Trang web',
+      workflow: 'Quy trình làm việc',
+      distribution: 'Phân phối',
+      access: 'Truy cập',
+      usersRoles: 'Người dùng và Vai trò',
+      tools: 'Công cụ',
+      statistics: 'Thống kê',
+      editorial: 'Biên tập',
+      publications: 'Ấn phẩm',
+      users: 'Người dùng',
+      openJournalSystems: 'Hệ thống Tạp chí Mở',
+      siteAdministration: 'Quản trị Trang web',
+      noNewNotifications: 'Không có thông báo mới',
+      logout: 'Đăng xuất',
+    },
+    settings: en.editor.settings,
+  },
 };
 

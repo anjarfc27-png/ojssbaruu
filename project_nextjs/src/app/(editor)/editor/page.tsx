@@ -131,7 +131,7 @@ export default function EditorPage() {
       <div
         className="pkp_page_header"
         style={{
-          padding: "1.5rem 0 0 0", // Padding horizontal dihapus karena sudah di parent
+          padding: "1.5rem 2rem 0 2rem", // Safe area padding horizontal
           backgroundColor: "#ffffff",
           borderBottom: "2px solid #e5e5e5",
         }}
@@ -158,7 +158,7 @@ export default function EditorPage() {
           style={{
             borderBottom: "2px solid #e5e5e5",
             background: "#ffffff",
-            padding: "0", // Padding dihapus karena sudah di parent
+            padding: "0 2rem", // Safe area padding horizontal
             position: "relative",
             display: "flex",
             justifyContent: "space-between",
@@ -166,7 +166,7 @@ export default function EditorPage() {
             margin: 0,
           }}
         >
-          <div style={{ display: "flex", flex: 1, paddingLeft: "1.5rem" }}>
+          <div style={{ display: "flex", flex: 1 }}>
             <PkpTabsList style={{ flex: 1 }}>
             {/* My Queue Tab */}
               <PkpTabsTrigger value="myQueue">
@@ -276,7 +276,7 @@ export default function EditorPage() {
           
           {/* Help Link - Right side of tabs */}
           <div style={{
-            padding: '0 1.5rem 0 1rem', // Safe padding right
+            padding: '0 0 0 1rem', // Padding left untuk spacing dari tabs
             display: 'flex',
             alignItems: 'center',
             height: '3rem'
@@ -322,7 +322,7 @@ export default function EditorPage() {
         </div>
 
               {/* Tab Contents - OJS 3.3 Exact Layout with Safe Area */}
-              <PkpTabsContent value="myQueue" style={{ position: "relative", padding: "1.5rem 0", backgroundColor: "#eaedee" }}>
+              <PkpTabsContent value="myQueue" style={{ position: "relative", padding: "1.5rem 2rem", backgroundColor: "#eaedee" }}>
                 <SubmissionTable 
                   submissions={myQueue} 
                   emptyMessage="Tidak ada submission di My Queue."
@@ -333,7 +333,7 @@ export default function EditorPage() {
               {/* Unassigned and All Active only visible for Manager/Admin */}
               {(isManagerOrAdmin || showAllTabsForTesting) && (
                 <>
-                  <PkpTabsContent value="unassigned" style={{ position: "relative", padding: "1.5rem 0", backgroundColor: "#eaedee" }}>
+                  <PkpTabsContent value="unassigned" style={{ position: "relative", padding: "1.5rem 2rem", backgroundColor: "#eaedee" }}>
                     <SubmissionTable 
                       submissions={unassigned} 
                       emptyMessage="Tidak ada submission yang belum ditugaskan."
@@ -341,7 +341,7 @@ export default function EditorPage() {
                     />
                   </PkpTabsContent>
 
-                  <PkpTabsContent value="active" style={{ position: "relative", padding: "1.5rem 0", backgroundColor: "#eaedee" }}>
+                  <PkpTabsContent value="active" style={{ position: "relative", padding: "1.5rem 2rem", backgroundColor: "#eaedee" }}>
                     <SubmissionTable 
                       submissions={active} 
                       emptyMessage="Tidak ada submission aktif."
@@ -351,7 +351,7 @@ export default function EditorPage() {
                 </>
               )}
 
-              <PkpTabsContent value="archive" style={{ position: "relative", padding: "1.5rem 0", backgroundColor: "#eaedee" }}>
+              <PkpTabsContent value="archive" style={{ position: "relative", padding: "1.5rem 2rem", backgroundColor: "#eaedee" }}>
                 <SubmissionTable 
                   submissions={archived} 
                   emptyMessage="Tidak ada submission yang diarsipkan."

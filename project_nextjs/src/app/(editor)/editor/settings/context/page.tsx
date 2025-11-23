@@ -11,8 +11,10 @@ import { PkpCheckbox } from "@/components/ui/pkp-checkbox";
 import { DUMMY_SECTIONS, DUMMY_CATEGORIES } from "@/features/editor/settings-dummy-data";
 import { USE_DUMMY } from "@/lib/dummy";
 import { useJournalSettings, useMigrateLocalStorageToDatabase } from "@/features/editor/hooks/useJournalSettings";
+import { useI18n } from "@/contexts/I18nContext";
 
 export default function SettingsContextPage() {
+  const { t } = useI18n();
   // Database integration
   const contextSettings = useJournalSettings({
     section: "context",
@@ -94,7 +96,7 @@ export default function SettingsContextPage() {
     
     // Validation
     if (!masthead.journalTitle.trim()) {
-      setMastheadFeedback({ type: 'error', message: 'Journal title is required.' });
+      setMastheadFeedback({ type: 'error', message: t('editor.settings.context.journalTitle') + ' is required.' });
       return;
     }
 
@@ -104,7 +106,7 @@ export default function SettingsContextPage() {
     });
 
     if (success) {
-      setMastheadFeedback({ type: 'success', message: 'Masthead settings saved successfully.' });
+      setMastheadFeedback({ type: 'success', message: t('editor.settings.saved') });
     } else {
       setMastheadFeedback({ type: 'error', message: contextSettings.error || 'Failed to save masthead settings.' });
     }
@@ -115,7 +117,7 @@ export default function SettingsContextPage() {
     
     // Validation
     if (!contact.contactEmail.trim()) {
-      setContactFeedback({ type: 'error', message: 'Contact email is required.' });
+      setContactFeedback({ type: 'error', message: t('editor.settings.context.contactEmail') + ' is required.' });
       return;
     }
     
@@ -133,7 +135,7 @@ export default function SettingsContextPage() {
     });
 
     if (success) {
-      setContactFeedback({ type: 'success', message: 'Contact information saved successfully.' });
+      setContactFeedback({ type: 'success', message: t('editor.settings.saved') });
     } else {
       setContactFeedback({ type: 'error', message: contextSettings.error || 'Failed to save contact information.' });
     }
@@ -167,7 +169,7 @@ export default function SettingsContextPage() {
             lineHeight: "2.25rem",
             color: "#002C40",
           }}>
-            Settings • Context
+            {t('editor.settings.settingsTitle')} • {t('editor.settings.context.title')}
           </h1>
           <p style={{
             fontSize: "0.875rem",
@@ -197,10 +199,10 @@ export default function SettingsContextPage() {
             marginBottom: "1.5rem",
           }}>
             <PkpTabsList style={{ flex: 1, padding: "0 1.5rem" }}>
-              <PkpTabsTrigger value="masthead">Masthead</PkpTabsTrigger>
-              <PkpTabsTrigger value="contact">Contact</PkpTabsTrigger>
-              <PkpTabsTrigger value="sections">Sections</PkpTabsTrigger>
-              <PkpTabsTrigger value="categories">Categories</PkpTabsTrigger>
+              <PkpTabsTrigger value="masthead">{t('editor.settings.context.masthead')}</PkpTabsTrigger>
+              <PkpTabsTrigger value="contact">{t('editor.settings.context.contact')}</PkpTabsTrigger>
+              <PkpTabsTrigger value="sections">{t('editor.settings.context.sections')}</PkpTabsTrigger>
+              <PkpTabsTrigger value="categories">{t('editor.settings.context.categories')}</PkpTabsTrigger>
             </PkpTabsList>
           </div>
 
@@ -213,7 +215,7 @@ export default function SettingsContextPage() {
                 marginBottom: "1rem",
                 color: "#002C40",
               }}>
-                Masthead
+                {t('editor.settings.context.masthead')}
               </h2>
               {mastheadFeedback && (
                 <div style={{
@@ -242,7 +244,7 @@ export default function SettingsContextPage() {
                       marginBottom: "0.5rem",
                       color: "#002C40",
                     }}>
-                      Journal Title <span style={{ color: "#dc3545" }}>*</span>
+                      {t('editor.settings.context.journalTitle')} <span style={{ color: "#dc3545" }}>*</span>
                     </label>
                     <PkpInput
                       type="text"
@@ -261,7 +263,7 @@ export default function SettingsContextPage() {
                       marginBottom: "0.5rem",
                       color: "#002C40",
                     }}>
-                      Journal Description
+                      {t('editor.settings.context.journalDescription')}
                     </label>
                     <PkpTextarea
                       rows={5}
@@ -279,7 +281,7 @@ export default function SettingsContextPage() {
                       marginBottom: "0.5rem",
                       color: "#002C40",
                     }}>
-                      Masthead
+                      {t('editor.settings.context.masthead')}
                     </label>
                     <PkpTextarea
                       rows={10}
@@ -290,7 +292,7 @@ export default function SettingsContextPage() {
                     />
                   </div>
                   <PkpButton variant="primary" type="submit" disabled={contextSettings.loading} loading={contextSettings.loading}>
-                    {contextSettings.loading ? 'Saving...' : 'Save'}
+                    {contextSettings.loading ? t('editor.settings.saving') : t('editor.settings.save')}
                   </PkpButton>
                 </div>
               </form>
@@ -306,7 +308,7 @@ export default function SettingsContextPage() {
                 marginBottom: "1rem",
                 color: "#002C40",
               }}>
-                Contact Information
+                {t('editor.settings.context.contact')}
               </h2>
               {contactFeedback && (
                 <div style={{
@@ -335,7 +337,7 @@ export default function SettingsContextPage() {
                       marginBottom: "0.5rem",
                       color: "#002C40",
                     }}>
-                      Contact Email <span style={{ color: "#dc3545" }}>*</span>
+                      {t('editor.settings.context.contactEmail')} <span style={{ color: "#dc3545" }}>*</span>
                     </label>
                     <PkpInput
                       type="email"
@@ -354,7 +356,7 @@ export default function SettingsContextPage() {
                       marginBottom: "0.5rem",
                       color: "#002C40",
                     }}>
-                      Contact Name
+                      {t('editor.settings.context.contactName')}
                     </label>
                     <PkpInput
                       type="text"
@@ -383,7 +385,7 @@ export default function SettingsContextPage() {
                     />
                   </div>
                   <PkpButton variant="primary" type="submit" disabled={contextSettings.loading} loading={contextSettings.loading}>
-                    {contextSettings.loading ? 'Saving...' : 'Save'}
+                    {contextSettings.loading ? t('editor.settings.saving') : t('editor.settings.save')}
                   </PkpButton>
                 </div>
               </form>
@@ -399,7 +401,7 @@ export default function SettingsContextPage() {
                 marginBottom: "1rem",
                 color: "#002C40",
               }}>
-                Journal Sections
+                {t('editor.settings.context.sections')}
               </h2>
               <p style={{
                 fontSize: "0.875rem",
@@ -414,9 +416,9 @@ export default function SettingsContextPage() {
                 padding: "1.5rem",
               }}>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1rem" }}>
-                  <PkpButton variant="primary">
-                    Add Section
-                  </PkpButton>
+                        <PkpButton variant="primary">
+                          {t('editor.settings.context.addSection')}
+                        </PkpButton>
                 </div>
                 <PkpTable>
                   <PkpTableHeader>
@@ -446,8 +448,8 @@ export default function SettingsContextPage() {
                             <PkpCheckbox checked={section.enabled} readOnly />
                           </PkpTableCell>
                           <PkpTableCell style={{ width: "120px", textAlign: "center" }}>
-                            <PkpButton variant="onclick" size="sm" style={{ marginRight: "0.5rem" }}>Edit</PkpButton>
-                            <PkpButton variant="onclick" size="sm">Delete</PkpButton>
+                                  <PkpButton variant="onclick" size="sm" style={{ marginRight: "0.5rem" }}>{t('editor.settings.context.edit')}</PkpButton>
+                                  <PkpButton variant="onclick" size="sm">{t('editor.settings.context.delete')}</PkpButton>
                           </PkpTableCell>
                         </PkpTableRow>
                       ))
@@ -488,9 +490,9 @@ export default function SettingsContextPage() {
                 padding: "1.5rem",
               }}>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1rem" }}>
-                  <PkpButton variant="primary">
-                    Add Category
-                  </PkpButton>
+                        <PkpButton variant="primary">
+                          {t('editor.settings.context.addCategory')}
+                        </PkpButton>
                 </div>
                 <PkpTable>
                   <PkpTableHeader>
@@ -516,8 +518,8 @@ export default function SettingsContextPage() {
                           </PkpTableCell>
                           <PkpTableCell>{category.path}</PkpTableCell>
                           <PkpTableCell style={{ width: "120px", textAlign: "center" }}>
-                            <PkpButton variant="onclick" size="sm" style={{ marginRight: "0.5rem" }}>Edit</PkpButton>
-                            <PkpButton variant="onclick" size="sm">Delete</PkpButton>
+                                  <PkpButton variant="onclick" size="sm" style={{ marginRight: "0.5rem" }}>{t('editor.settings.context.edit')}</PkpButton>
+                                  <PkpButton variant="onclick" size="sm">{t('editor.settings.context.delete')}</PkpButton>
                           </PkpTableCell>
                         </PkpTableRow>
                       ))

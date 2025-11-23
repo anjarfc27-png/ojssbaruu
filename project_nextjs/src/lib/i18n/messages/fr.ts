@@ -55,5 +55,31 @@ export const fr = {
   systemInfo: en.systemInfo,
   languages: en.languages,
   messages: en.messages,
+  
+  // Editor Navigation
+  editor: {
+    navigation: {
+      submissions: 'Soumissions',
+      issues: 'Numéros',
+      announcements: 'Annonces',
+      settings: 'Paramètres',
+      context: 'Contexte',
+      website: 'Site Web',
+      workflow: 'Flux de Travail',
+      distribution: 'Distribution',
+      access: 'Accès',
+      usersRoles: 'Utilisateurs et Rôles',
+      tools: 'Outils',
+      statistics: 'Statistiques',
+      editorial: 'Éditorial',
+      publications: 'Publications',
+      users: 'Utilisateurs',
+      openJournalSystems: 'Systèmes de Revues en Libre Accès',
+      siteAdministration: 'Administration du Site',
+      noNewNotifications: 'Aucune nouvelle notification',
+      logout: 'Déconnexion',
+    },
+    settings: en.editor.settings,
+  },
 };
 

@@ -55,5 +55,31 @@ export const th = {
   systemInfo: en.systemInfo,
   languages: en.languages,
   messages: en.messages,
+  
+  // Editor Navigation
+  editor: {
+    navigation: {
+      submissions: 'การส่งบทความ',
+      issues: 'ฉบับ',
+      announcements: 'ประกาศ',
+      settings: 'การตั้งค่า',
+      context: 'บริบท',
+      website: 'เว็บไซต์',
+      workflow: 'ขั้นตอนการทำงาน',
+      distribution: 'การเผยแพร่',
+      access: 'การเข้าถึง',
+      usersRoles: 'ผู้ใช้และบทบาท',
+      tools: 'เครื่องมือ',
+      statistics: 'สถิติ',
+      editorial: 'บรรณาธิการ',
+      publications: 'สิ่งพิมพ์',
+      users: 'ผู้ใช้',
+      openJournalSystems: 'ระบบวารสารแบบเปิด',
+      siteAdministration: 'การบริหารไซต์',
+      noNewNotifications: 'ไม่มีประกาศใหม่',
+      logout: 'ออกจากระบบ',
+    },
+    settings: en.editor.settings,
+  },
 };
 

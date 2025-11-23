@@ -4,19 +4,22 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
 import { Info, Settings, Globe, Compass, Mail } from "lucide-react";
+import { useI18n } from "@/contexts/I18nContext";
 
 type Props = { children: ReactNode };
 
-const LINKS = [
-  { href: "/admin/site-settings/site-setup/settings", label: "Settings" },
-  { href: "/admin/site-settings/site-setup/information", label: "Information" },
-  { href: "/admin/site-settings/site-setup/languages", label: "Languages" },
-  { href: "/admin/site-settings/site-setup/navigation", label: "Navigation" },
-  { href: "/admin/site-settings/site-setup/bulk-emails", label: "Bulk Emails" },
-];
-
 export default function SiteSetupLayout({ children }: Props) {
   const pathname = usePathname();
+  const { t } = useI18n();
+  
+  const LINKS = [
+    { href: "/admin/site-settings/site-setup/settings", label: t('siteSettings.setup'), labelKey: 'siteSettings.setup' },
+    { href: "/admin/site-settings/site-setup/information", label: t('siteSettings.information'), labelKey: 'siteSettings.information' },
+    { href: "/admin/site-settings/site-setup/languages", label: t('siteSettings.languages'), labelKey: 'siteSettings.languages' },
+    { href: "/admin/site-settings/site-setup/navigation", label: t('siteSettings.navigation'), labelKey: 'siteSettings.navigation' },
+    { href: "/admin/site-settings/site-setup/bulk-emails", label: t('siteSettings.bulkEmails'), labelKey: 'siteSettings.bulkEmails' },
+  ];
+  
   return (
     <div className="overflow-hidden rounded-lg border border-[var(--border)] bg-white shadow-sm">
       <div className="grid gap-0 md:grid-cols-[220px_1fr]">

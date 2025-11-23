@@ -9,8 +9,10 @@ import { PkpRadio } from "@/components/ui/pkp-radio";
 import { PkpSelect } from "@/components/ui/pkp-select";
 import { PkpCheckbox } from "@/components/ui/pkp-checkbox";
 import { useJournalSettings, useMigrateLocalStorageToDatabase } from "@/features/editor/hooks/useJournalSettings";
+import { useI18n } from "@/contexts/I18nContext";
 
 export default function SettingsDistributionPage() {
+  const { t } = useI18n();
   const [activeTab, setActiveTab] = useState("license");
 
   // Database integration
@@ -241,7 +243,7 @@ export default function SettingsDistributionPage() {
             lineHeight: "2.25rem",
             color: "#002C40",
           }}>
-            Settings • Distribution
+            {t('editor.settings.settingsTitle')} • {t('editor.settings.distribution.title')}
           </h1>
           <p style={{
             fontSize: "0.875rem",
@@ -570,7 +572,7 @@ export default function SettingsDistributionPage() {
               </div>
 
               <PkpButton variant="primary" type="submit" disabled={distributionSettings.loading} loading={distributionSettings.loading}>
-                {distributionSettings.loading ? 'Saving...' : 'Save'}
+                {distributionSettings.loading ? t('editor.settings.saving') : t('editor.settings.save')}
               </PkpButton>
             </div>
             </form>
@@ -835,7 +837,7 @@ export default function SettingsDistributionPage() {
               </div>
 
               <PkpButton variant="primary" type="submit" disabled={distributionSettings.loading} loading={distributionSettings.loading}>
-                {distributionSettings.loading ? 'Saving...' : 'Save'}
+                {distributionSettings.loading ? t('editor.settings.saving') : t('editor.settings.save')}
               </PkpButton>
             </div>
             </form>
@@ -1036,7 +1038,7 @@ export default function SettingsDistributionPage() {
               </div>
 
               <PkpButton variant="primary" type="submit" disabled={distributionSettings.loading} loading={distributionSettings.loading}>
-                {distributionSettings.loading ? 'Saving...' : 'Save'}
+                {distributionSettings.loading ? t('editor.settings.saving') : t('editor.settings.save')}
               </PkpButton>
             </div>
             </form>

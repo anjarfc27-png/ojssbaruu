@@ -11,8 +11,11 @@ import { PkpTable, PkpTableHeader, PkpTableRow, PkpTableHead, PkpTableCell } fro
 import { DUMMY_NAVIGATION_MENUS, DUMMY_NAVIGATION_MENU_ITEMS, DUMMY_PLUGINS } from "@/features/editor/settings-dummy-data";
 import { USE_DUMMY } from "@/lib/dummy";
 import { useJournalSettings, useMigrateLocalStorageToDatabase } from "@/features/editor/hooks/useJournalSettings";
+import { locales, localeNames } from "@/lib/i18n/config";
+import { getLocaleInfo } from "@/lib/locales";
 
 export default function WebsiteSettingsPage() {
+  const { t } = useI18n();
   const [activeTab, setActiveTab] = useState("appearance");
   const [activeAppearanceSubTab, setActiveAppearanceSubTab] = useState("theme");
   const [activeSetupSubTab, setActiveSetupSubTab] = useState("information");
@@ -66,7 +69,16 @@ export default function WebsiteSettingsPage() {
   const [setupInformationFeedback, setSetupInformationFeedback] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
 
   // Setup - Languages state
-  const [setupLanguages, setSetupLanguages] = useState({ primaryLocale: 'en', supportedLocales: ['en'] });
+  // Structure: { primaryLocale: string, languages: { [localeCode]: { ui: boolean, forms: boolean, submissions: boolean } } }
+  const [setupLanguages, setSetupLanguages] = useState<{
+    primaryLocale: string;
+    languages: Record<string, { ui: boolean; forms: boolean; submissions: boolean }>;
+  }>({
+    primaryLocale: 'en',
+    languages: {
+      'en': { ui: true, forms: true, submissions: true },
+    }
+  });
   const [setupLanguagesFeedback, setSetupLanguagesFeedback] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
 
   // Setup - Announcements state
@@ -128,7 +140,16 @@ export default function WebsiteSettingsPage() {
       if (settings.setup_languages) {
         try {
           const langData = typeof settings.setup_languages === 'string' ? JSON.parse(settings.setup_languages) : settings.setup_languages;
-          setSetupLanguages(langData);
+          // Migrate old format to new format if needed
+          if (langData.supportedLocales && !langData.languages) {
+            const languages: Record<string, { ui: boolean; forms: boolean; submissions: boolean }> = {};
+            langData.supportedLocales.forEach((loc: string) => {
+              languages[loc] = { ui: true, forms: true, submissions: true };
+            });
+            setSetupLanguages({ primaryLocale: langData.primaryLocale || 'en', languages });
+          } else {
+            setSetupLanguages(langData);
+          }
         } catch {}
       }
       if (settings.setup_announcements) {
@@ -298,7 +319,12 @@ export default function WebsiteSettingsPage() {
   const handleSaveSetupLanguages = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!setupLanguages.primaryLocale) {
-      setSetupLanguagesFeedback({ type: 'error', message: 'Primary locale is required.' });
+      setSetupLanguagesFeedback({ type: 'error', message: t('editor.settings.website.primaryLocale') + ' is required.' });
+      return;
+    }
+    // Validation: Primary locale must have UI enabled
+    if (!setupLanguages.languages[setupLanguages.primaryLocale]?.ui) {
+      setSetupLanguagesFeedback({ type: 'error', message: t('editor.settings.website.primaryLocale') + ' must have UI enabled.' });
       return;
     }
     setSetupLanguagesFeedback(null);
@@ -306,7 +332,7 @@ export default function WebsiteSettingsPage() {
       setup_languages: JSON.stringify(setupLanguages),
     });
     if (success) {
-      setSetupLanguagesFeedback({ type: 'success', message: 'Language settings saved successfully.' });
+      setSetupLanguagesFeedback({ type: 'success', message: t('editor.settings.saved') });
     } else {
       setSetupLanguagesFeedback({ type: 'error', message: websiteSettings.error || 'Failed to save language settings.' });
     }
@@ -438,7 +464,7 @@ export default function WebsiteSettingsPage() {
             lineHeight: "2.25rem",
             color: "#002C40",
           }}>
-            Settings • Website
+            {t('editor.settings.settingsTitle')} • {t('editor.settings.website.title')}
           </h1>
           <p style={{
             fontSize: "0.875rem",
@@ -468,9 +494,9 @@ export default function WebsiteSettingsPage() {
             marginBottom: "1.5rem",
           }}>
             <PkpTabsList style={{ flex: 1, padding: "0 1.5rem" }}>
-              <PkpTabsTrigger value="appearance">Appearance</PkpTabsTrigger>
-              <PkpTabsTrigger value="setup">Setup</PkpTabsTrigger>
-              <PkpTabsTrigger value="plugins">Plugins</PkpTabsTrigger>
+              <PkpTabsTrigger value="appearance">{t('editor.settings.website.appearance')}</PkpTabsTrigger>
+              <PkpTabsTrigger value="setup">{t('editor.settings.website.setup')}</PkpTabsTrigger>
+              <PkpTabsTrigger value="plugins">{t('editor.settings.website.plugins')}</PkpTabsTrigger>
             </PkpTabsList>
           </div>
 
@@ -604,7 +630,7 @@ export default function WebsiteSettingsPage() {
                           </PkpSelect>
                         </div>
                         <PkpButton variant="primary" type="submit" disabled={websiteSettings.loading} loading={websiteSettings.loading}>
-                          {websiteSettings.loading ? 'Saving...' : 'Save'}
+                          {websiteSettings.loading ? t('editor.settings.saving') : t('editor.settings.save')}
                         </PkpButton>
                       </div>
                     </form>
@@ -679,7 +705,7 @@ export default function WebsiteSettingsPage() {
                           />
                         </div>
                         <PkpButton variant="primary" type="submit" disabled={websiteSettings.loading} loading={websiteSettings.loading}>
-                          {websiteSettings.loading ? 'Saving...' : 'Save'}
+                          {websiteSettings.loading ? t('editor.settings.saving') : t('editor.settings.save')}
                         </PkpButton>
                       </div>
                     </form>
@@ -782,7 +808,7 @@ export default function WebsiteSettingsPage() {
                           </p>
                         </div>
                         <PkpButton variant="primary" type="submit" disabled={websiteSettings.loading} loading={websiteSettings.loading}>
-                          {websiteSettings.loading ? 'Saving...' : 'Save'}
+                          {websiteSettings.loading ? t('editor.settings.saving') : t('editor.settings.save')}
                         </PkpButton>
                       </div>
                     </form>
@@ -846,7 +872,7 @@ export default function WebsiteSettingsPage() {
                         fontWeight: activeSetupSubTab === "languages" ? 600 : 400,
                       }}
                     >
-                      Languages
+                      {t('editor.settings.website.languages')}
                     </button>
                     <button
                       type="button"
@@ -1053,7 +1079,7 @@ export default function WebsiteSettingsPage() {
                           />
                         </div>
                         <PkpButton variant="primary" type="submit" disabled={websiteSettings.loading} loading={websiteSettings.loading}>
-                          {websiteSettings.loading ? 'Saving...' : 'Save'}
+                          {websiteSettings.loading ? t('editor.settings.saving') : t('editor.settings.save')}
                         </PkpButton>
                       </div>
                     </form>
@@ -1068,7 +1094,7 @@ export default function WebsiteSettingsPage() {
                       marginBottom: "1rem",
                       color: "#002C40",
                     }}>
-                      Languages
+                      {t('editor.settings.website.languages')}
                     </h2>
                     {setupLanguagesFeedback && (
                       <div style={{
@@ -1092,11 +1118,13 @@ export default function WebsiteSettingsPage() {
                         <p style={{
                           fontSize: "0.875rem",
                           color: "rgba(0, 0, 0, 0.54)",
-                          marginBottom: "1rem",
+                          marginBottom: "1.5rem",
                         }}>
-                          Languages that have been installed on your site by an Administrator can be enabled for the user interface (UI), forms, and submissions.
+                          {t('editor.settings.website.languageDescription')}
                         </p>
-                        <div style={{ marginBottom: "1rem" }}>
+                        
+                        {/* Primary Locale Selector */}
+                        <div style={{ marginBottom: "1.5rem" }}>
                           <label style={{
                             display: "block",
                             fontSize: "0.875rem",
@@ -1104,70 +1132,147 @@ export default function WebsiteSettingsPage() {
                             marginBottom: "0.5rem",
                             color: "#002C40",
                           }}>
-                            Primary Locale <span style={{ color: "#dc3545" }}>*</span>
+                            {t('editor.settings.website.primaryLocale')} <span style={{ color: "#dc3545" }}>*</span>
                           </label>
                           <PkpSelect 
-                            style={{ width: "100%" }}
+                            style={{ width: "100%", maxWidth: "300px" }}
                             value={setupLanguages.primaryLocale}
                             onChange={(e) => setSetupLanguages({ ...setupLanguages, primaryLocale: e.target.value })}
                           >
-                            <option value="en">English</option>
-                            <option value="id">Indonesian</option>
-                            <option value="es">Spanish</option>
-                            <option value="fr">French</option>
+                            {locales.map((loc) => {
+                              const localeInfo = getLocaleInfo(loc);
+                              return (
+                                <option key={loc} value={loc}>
+                                  {localeInfo ? `${localeInfo.label} (${localeInfo.nativeName})` : localeNames[loc]}
+                                </option>
+                              );
+                            })}
                           </PkpSelect>
-                        </div>
-                        <div style={{ marginBottom: "1rem" }}>
-                          <label style={{
-                            display: "block",
-                            fontSize: "0.875rem",
-                            fontWeight: 600,
-                            marginBottom: "0.5rem",
-                            color: "#002C40",
+                          <p style={{
+                            fontSize: "0.75rem",
+                            color: "rgba(0, 0, 0, 0.54)",
+                            marginTop: "0.5rem",
+                            marginBottom: 0,
                           }}>
-                            Supported Locales
-                          </label>
-                          <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
-                            <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-                              <PkpCheckbox 
-                                id="lang-en-ui" 
-                                checked={setupLanguages.supportedLocales.includes('en')}
-                                onChange={(e) => {
-                                  if (e.target.checked) {
-                                    setSetupLanguages({ 
-                                      ...setupLanguages, 
-                                      supportedLocales: [...setupLanguages.supportedLocales, 'en'] 
-                                    });
-                                  } else {
-                                    setSetupLanguages({ 
-                                      ...setupLanguages, 
-                                      supportedLocales: setupLanguages.supportedLocales.filter(l => l !== 'en') 
-                                    });
-                                  }
-                                }}
-                              />
-                              <label htmlFor="lang-en-ui" style={{ fontSize: "0.875rem", cursor: "pointer" }}>English - UI</label>
-                            </div>
-                            <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-                              <PkpCheckbox 
-                                id="lang-en-forms" 
-                                checked={setupLanguages.supportedLocales.includes('en')}
-                                readOnly
-                              />
-                              <label htmlFor="lang-en-forms" style={{ fontSize: "0.875rem" }}>English - Forms</label>
-                            </div>
-                            <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-                              <PkpCheckbox 
-                                id="lang-en-submissions" 
-                                checked={setupLanguages.supportedLocales.includes('en')}
-                                readOnly
-                              />
-                              <label htmlFor="lang-en-submissions" style={{ fontSize: "0.875rem" }}>English - Submissions</label>
-                            </div>
-                          </div>
+                            The primary locale will be used as the default language for the journal.
+                          </p>
                         </div>
+
+                        {/* Languages Grid */}
+                        <div style={{
+                          border: "1px solid #e5e5e5",
+                          borderRadius: "4px",
+                          overflow: "hidden",
+                          marginBottom: "1.5rem",
+                        }}>
+                          <PkpTable>
+                            <PkpTableHeader>
+                              <PkpTableRow isHeader>
+                                <PkpTableHead>{t('editor.settings.website.languages')}</PkpTableHead>
+                                <PkpTableHead style={{ width: "100px", textAlign: "center" }}>{t('editor.settings.website.ui')}</PkpTableHead>
+                                <PkpTableHead style={{ width: "100px", textAlign: "center" }}>{t('editor.settings.website.forms')}</PkpTableHead>
+                                <PkpTableHead style={{ width: "120px", textAlign: "center" }}>{t('editor.settings.website.submissions')}</PkpTableHead>
+                              </PkpTableRow>
+                            </PkpTableHeader>
+                            <tbody>
+                              {locales.map((localeCode) => {
+                                const localeInfo = getLocaleInfo(localeCode);
+                                const langData = setupLanguages.languages[localeCode] || { ui: false, forms: false, submissions: false };
+                                const isPrimary = setupLanguages.primaryLocale === localeCode;
+
+                                return (
+                                  <PkpTableRow key={localeCode}>
+                                    <PkpTableCell>
+                                      <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                                        <div>
+                                          <div style={{ fontWeight: 500, fontSize: "0.875rem", color: "rgba(0, 0, 0, 0.84)" }}>
+                                            {localeInfo ? localeInfo.label : localeNames[localeCode]}
+                                          </div>
+                                          {localeInfo && (
+                                            <div style={{ fontSize: "0.75rem", color: "rgba(0, 0, 0, 0.54)" }}>
+                                              {localeInfo.nativeName}
+                                            </div>
+                                          )}
+                                        </div>
+                                        {isPrimary && (
+                                          <span style={{
+                                            display: "inline-block",
+                                            padding: "0.125rem 0.5rem",
+                                            backgroundColor: "#e3f2fd",
+                                            color: "#1976d2",
+                                            borderRadius: "0.125rem",
+                                            fontSize: "0.75rem",
+                                            fontWeight: 500,
+                                            marginLeft: "0.5rem",
+                                          }}>
+                                            Primary
+                                          </span>
+                                        )}
+                                      </div>
+                                    </PkpTableCell>
+                                    <PkpTableCell style={{ textAlign: "center" }}>
+                                      <PkpCheckbox
+                                        id={`lang-${localeCode}-ui`}
+                                        checked={langData.ui}
+                                        onChange={(e) => {
+                                          setSetupLanguages({
+                                            ...setupLanguages,
+                                            languages: {
+                                              ...setupLanguages.languages,
+                                              [localeCode]: {
+                                                ...langData,
+                                                ui: e.target.checked,
+                                              },
+                                            },
+                                          });
+                                        }}
+                                      />
+                                    </PkpTableCell>
+                                    <PkpTableCell style={{ textAlign: "center" }}>
+                                      <PkpCheckbox
+                                        id={`lang-${localeCode}-forms`}
+                                        checked={langData.forms}
+                                        onChange={(e) => {
+                                          setSetupLanguages({
+                                            ...setupLanguages,
+                                            languages: {
+                                              ...setupLanguages.languages,
+                                              [localeCode]: {
+                                                ...langData,
+                                                forms: e.target.checked,
+                                              },
+                                            },
+                                          });
+                                        }}
+                                      />
+                                    </PkpTableCell>
+                                    <PkpTableCell style={{ textAlign: "center" }}>
+                                      <PkpCheckbox
+                                        id={`lang-${localeCode}-submissions`}
+                                        checked={langData.submissions}
+                                        onChange={(e) => {
+                                          setSetupLanguages({
+                                            ...setupLanguages,
+                                            languages: {
+                                              ...setupLanguages.languages,
+                                              [localeCode]: {
+                                                ...langData,
+                                                submissions: e.target.checked,
+                                              },
+                                            },
+                                          });
+                                        }}
+                                      />
+                                    </PkpTableCell>
+                                  </PkpTableRow>
+                                );
+                              })}
+                            </tbody>
+                          </PkpTable>
+                        </div>
+
                         <PkpButton variant="primary" type="submit" disabled={websiteSettings.loading} loading={websiteSettings.loading}>
-                          {websiteSettings.loading ? 'Saving...' : 'Save'}
+                          {websiteSettings.loading ? t('editor.settings.saving') : t('editor.settings.save')}
                         </PkpButton>
                       </div>
                     </form>
@@ -1354,7 +1459,7 @@ export default function WebsiteSettingsPage() {
                           </p>
                         </div>
                         <PkpButton variant="primary" type="submit" disabled={websiteSettings.loading} loading={websiteSettings.loading}>
-                          {websiteSettings.loading ? 'Saving...' : 'Save'}
+                          {websiteSettings.loading ? t('editor.settings.saving') : t('editor.settings.save')}
                         </PkpButton>
                       </div>
                     </form>
@@ -1417,7 +1522,7 @@ export default function WebsiteSettingsPage() {
                           </p>
                         </div>
                         <PkpButton variant="primary" type="submit" disabled={websiteSettings.loading} loading={websiteSettings.loading}>
-                          {websiteSettings.loading ? 'Saving...' : 'Save'}
+                          {websiteSettings.loading ? t('editor.settings.saving') : t('editor.settings.save')}
                         </PkpButton>
                       </div>
                     </form>
@@ -1480,7 +1585,7 @@ export default function WebsiteSettingsPage() {
                           </p>
                         </div>
                         <PkpButton variant="primary" type="submit" disabled={websiteSettings.loading} loading={websiteSettings.loading}>
-                          {websiteSettings.loading ? 'Saving...' : 'Save'}
+                          {websiteSettings.loading ? t('editor.settings.saving') : t('editor.settings.save')}
                         </PkpButton>
                       </div>
                     </form>
@@ -1558,7 +1663,7 @@ export default function WebsiteSettingsPage() {
                           </PkpSelect>
                         </div>
                         <PkpButton variant="primary" type="submit" disabled={websiteSettings.loading} loading={websiteSettings.loading}>
-                          {websiteSettings.loading ? 'Saving...' : 'Save'}
+                          {websiteSettings.loading ? t('editor.settings.saving') : t('editor.settings.save')}
                         </PkpButton>
                       </div>
                     </form>
@@ -1707,7 +1812,7 @@ export default function WebsiteSettingsPage() {
                         </div>
 
                         <PkpButton variant="primary" type="submit" disabled={websiteSettings.loading} loading={websiteSettings.loading}>
-                          {websiteSettings.loading ? 'Saving...' : 'Save'}
+                          {websiteSettings.loading ? t('editor.settings.saving') : t('editor.settings.save')}
                         </PkpButton>
                       </div>
                     </form>

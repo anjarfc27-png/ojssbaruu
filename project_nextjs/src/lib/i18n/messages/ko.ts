@@ -55,5 +55,31 @@ export const ko = {
   systemInfo: en.systemInfo,
   languages: en.languages,
   messages: en.messages,
+  
+  // Editor Navigation
+  editor: {
+    navigation: {
+      submissions: '제출',
+      issues: '호',
+      announcements: '공지사항',
+      settings: '설정',
+      context: '컨텍스트',
+      website: '웹사이트',
+      workflow: '워크플로우',
+      distribution: '배포',
+      access: '접근',
+      usersRoles: '사용자 및 역할',
+      tools: '도구',
+      statistics: '통계',
+      editorial: '편집',
+      publications: '출판물',
+      users: '사용자',
+      openJournalSystems: '오픈 저널 시스템',
+      siteAdministration: '사이트 관리',
+      noNewNotifications: '새 알림 없음',
+      logout: '로그아웃',
+    },
+    settings: en.editor.settings,
+  },
 };
 

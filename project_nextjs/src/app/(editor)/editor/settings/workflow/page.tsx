@@ -19,8 +19,10 @@ import {
 } from "@/features/editor/settings-dummy-data";
 import { USE_DUMMY } from "@/lib/dummy";
 import { useJournalSettings, useMigrateLocalStorageToDatabase } from "@/features/editor/hooks/useJournalSettings";
+import { useI18n } from "@/contexts/I18nContext";
 
 export default function SettingsWorkflowPage() {
+  const { t } = useI18n();
   const [activeTab, setActiveTab] = useState("submission");
   const [activeSubTab, setActiveSubTab] = useState("disableSubmissions");
   const [activeReviewSubTab, setActiveReviewSubTab] = useState("reviewSetup");
@@ -296,7 +298,7 @@ export default function SettingsWorkflowPage() {
             lineHeight: "2.25rem",
             color: "#002C40",
           }}>
-            Settings • Workflow
+            {t('editor.settings.settingsTitle')} • {t('editor.settings.workflow.title')}
           </h1>
           <p style={{
             fontSize: "0.875rem",
@@ -326,10 +328,10 @@ export default function SettingsWorkflowPage() {
             marginBottom: "1.5rem",
           }}>
             <PkpTabsList style={{ flex: 1, padding: "0 1.5rem" }}>
-              <PkpTabsTrigger value="submission">Submission</PkpTabsTrigger>
-              <PkpTabsTrigger value="review">Review</PkpTabsTrigger>
-              <PkpTabsTrigger value="library">Library</PkpTabsTrigger>
-              <PkpTabsTrigger value="emails">Emails</PkpTabsTrigger>
+              <PkpTabsTrigger value="submission">{t('editor.settings.workflow.submission')}</PkpTabsTrigger>
+              <PkpTabsTrigger value="review">{t('editor.settings.workflow.review')}</PkpTabsTrigger>
+              <PkpTabsTrigger value="library">{t('editor.settings.workflow.library')}</PkpTabsTrigger>
+              <PkpTabsTrigger value="emails">{t('editor.settings.workflow.emails')}</PkpTabsTrigger>
             </PkpTabsList>
           </div>
 
@@ -524,8 +526,8 @@ export default function SettingsWorkflowPage() {
                                     <PkpCheckbox checked={field.authorEditable} readOnly />
                                   </PkpTableCell>
                                   <PkpTableCell style={{ width: "120px", textAlign: "center" }}>
-                                    <PkpButton variant="onclick" size="sm" style={{ marginRight: "0.5rem" }}>Edit</PkpButton>
-                                    <PkpButton variant="onclick" size="sm">Delete</PkpButton>
+                                    <PkpButton variant="onclick" size="sm" style={{ marginRight: "0.5rem" }}>{t('common.edit')}</PkpButton>
+                                    <PkpButton variant="onclick" size="sm">{t('common.delete')}</PkpButton>
                                   </PkpTableCell>
                                 </PkpTableRow>
                               ))
@@ -600,8 +602,8 @@ export default function SettingsWorkflowPage() {
                                     <PkpCheckbox checked={component.required} readOnly />
                                   </PkpTableCell>
                                   <PkpTableCell style={{ width: "120px", textAlign: "center" }}>
-                                    <PkpButton variant="onclick" size="sm" style={{ marginRight: "0.5rem" }}>Edit</PkpButton>
-                                    <PkpButton variant="onclick" size="sm">Delete</PkpButton>
+                                    <PkpButton variant="onclick" size="sm" style={{ marginRight: "0.5rem" }}>{t('common.edit')}</PkpButton>
+                                    <PkpButton variant="onclick" size="sm">{t('common.delete')}</PkpButton>
                                   </PkpTableCell>
                                 </PkpTableRow>
                               ))
@@ -665,8 +667,8 @@ export default function SettingsWorkflowPage() {
                                     <div style={{ fontSize: "0.875rem", color: "rgba(0, 0, 0, 0.84)" }}>{item.content}</div>
                                   </PkpTableCell>
                                   <PkpTableCell style={{ width: "120px", textAlign: "center" }}>
-                                    <PkpButton variant="onclick" size="sm" style={{ marginRight: "0.5rem" }}>Edit</PkpButton>
-                                    <PkpButton variant="onclick" size="sm">Delete</PkpButton>
+                                    <PkpButton variant="onclick" size="sm" style={{ marginRight: "0.5rem" }}>{t('common.edit')}</PkpButton>
+                                    <PkpButton variant="onclick" size="sm">{t('common.delete')}</PkpButton>
                                   </PkpTableCell>
                                 </PkpTableRow>
                               ))
@@ -749,7 +751,7 @@ export default function SettingsWorkflowPage() {
                           disabled={authorGuidelinesSettings.loading}
                           loading={authorGuidelinesSettings.loading}
                         >
-                          {authorGuidelinesSettings.loading ? "Saving..." : "Save"}
+                          {authorGuidelinesSettings.loading ? t('editor.settings.saving') : t('editor.settings.save')}
                         </PkpButton>
                       </div>
                     </div>
@@ -1053,7 +1055,7 @@ export default function SettingsWorkflowPage() {
                         disabled={reviewSetupSettings.loading}
                         loading={reviewSetupSettings.loading}
                       >
-                        {reviewSetupSettings.loading ? "Saving..." : "Save"}
+                        {reviewSetupSettings.loading ? t('editor.settings.saving') : t('editor.settings.save')}
                       </PkpButton>
                     </div>
                   </div>

@@ -55,5 +55,31 @@ export const ru = {
   systemInfo: en.systemInfo,
   languages: en.languages,
   messages: en.messages,
+  
+  // Editor Navigation
+  editor: {
+    navigation: {
+      submissions: 'Отправки',
+      issues: 'Выпуски',
+      announcements: 'Объявления',
+      settings: 'Настройки',
+      context: 'Контекст',
+      website: 'Веб-сайт',
+      workflow: 'Рабочий процесс',
+      distribution: 'Распределение',
+      access: 'Доступ',
+      usersRoles: 'Пользователи и роли',
+      tools: 'Инструменты',
+      statistics: 'Статистика',
+      editorial: 'Редакция',
+      publications: 'Публикации',
+      users: 'Пользователи',
+      openJournalSystems: 'Системы открытых журналов',
+      siteAdministration: 'Администрирование сайта',
+      noNewNotifications: 'Нет новых уведомлений',
+      logout: 'Выйти',
+    },
+    settings: en.editor.settings,
+  },
 };
 

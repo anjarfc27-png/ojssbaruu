@@ -55,5 +55,31 @@ export const tr = {
   systemInfo: en.systemInfo,
   languages: en.languages,
   messages: en.messages,
+  
+  // Editor Navigation
+  editor: {
+    navigation: {
+      submissions: 'Gönderiler',
+      issues: 'Sayılar',
+      announcements: 'Duyurular',
+      settings: 'Ayarlar',
+      context: 'Bağlam',
+      website: 'Web Sitesi',
+      workflow: 'İş Akışı',
+      distribution: 'Dağıtım',
+      access: 'Erişim',
+      usersRoles: 'Kullanıcılar ve Roller',
+      tools: 'Araçlar',
+      statistics: 'İstatistikler',
+      editorial: 'Editörlük',
+      publications: 'Yayınlar',
+      users: 'Kullanıcılar',
+      openJournalSystems: 'Açık Dergi Sistemleri',
+      siteAdministration: 'Site Yönetimi',
+      noNewNotifications: 'Yeni bildirim yok',
+      logout: 'Çıkış Yap',
+    },
+    settings: en.editor.settings,
+  },
 };
 

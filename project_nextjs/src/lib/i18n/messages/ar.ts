@@ -55,5 +55,31 @@ export const ar = {
   systemInfo: en.systemInfo,
   languages: en.languages,
   messages: en.messages,
+  
+  // Editor Navigation
+  editor: {
+    navigation: {
+      submissions: 'الطبعات',
+      issues: 'الإصدارات',
+      announcements: 'الإعلانات',
+      settings: 'الإعدادات',
+      context: 'السياق',
+      website: 'الموقع الإلكتروني',
+      workflow: 'سير العمل',
+      distribution: 'التوزيع',
+      access: 'الوصول',
+      usersRoles: 'المستخدمون والأدوار',
+      tools: 'الأدوات',
+      statistics: 'الإحصائيات',
+      editorial: 'التحرير',
+      publications: 'المنشورات',
+      users: 'المستخدمون',
+      openJournalSystems: 'أنظمة المجلات المفتوحة',
+      siteAdministration: 'إدارة الموقع',
+      noNewNotifications: 'لا توجد إشعارات جديدة',
+      logout: 'تسجيل الخروج',
+    },
+    settings: en.editor.settings,
+  },
 };
 

@@ -3,17 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
-
-const SYSTEM_LINKS = [
-  { href: "/admin/system/system-information", label: "System Information" },
-  { href: "/admin/system/expire-sessions", label: "Expire User Sessions" },
-  { href: "/admin/system/clear-data-caches", label: "Clear Data Caches" },
-  { href: "/admin/system/clear-template-cache", label: "Clear Template Cache" },
-  {
-    href: "/admin/system/clear-scheduled-tasks",
-    label: "Clear Scheduled Task Execution Logs",
-  },
-];
+import { useI18n } from "@/contexts/I18nContext";
 
 type Props = {
   children: ReactNode;
@@ -21,6 +11,19 @@ type Props = {
 
 export default function SystemLayout({ children }: Props) {
   const pathname = usePathname();
+  const { t } = useI18n();
+
+  const SYSTEM_LINKS = [
+    { href: "/admin/system/system-information", label: t('admin.systemInformation'), labelKey: 'admin.systemInformation' },
+    { href: "/admin/system/expire-sessions", label: t('admin.expireUserSessions'), labelKey: 'admin.expireUserSessions' },
+    { href: "/admin/system/clear-data-caches", label: t('admin.clearDataCaches'), labelKey: 'admin.clearDataCaches' },
+    { href: "/admin/system/clear-template-cache", label: t('admin.clearTemplateCache'), labelKey: 'admin.clearTemplateCache' },
+    {
+      href: "/admin/system/clear-scheduled-tasks",
+      label: t('admin.clearScheduledTaskExecutionLogs'),
+      labelKey: 'admin.clearScheduledTaskExecutionLogs',
+    },
+  ];
 
   return (
     <div className="min-h-screen bg-white">
@@ -34,7 +37,7 @@ export default function SystemLayout({ children }: Props) {
           fontWeight: '600',
           color: '#111827'
         }}>
-          Administrative Functions
+          {t('admin.administrativeFunctions')}
         </h1>
       </div>
 

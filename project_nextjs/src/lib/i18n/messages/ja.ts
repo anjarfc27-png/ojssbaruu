@@ -55,5 +55,31 @@ export const ja = {
   systemInfo: en.systemInfo,
   languages: en.languages,
   messages: en.messages,
+  
+  // Editor Navigation
+  editor: {
+    navigation: {
+      submissions: '投稿',
+      issues: '号',
+      announcements: 'お知らせ',
+      settings: '設定',
+      context: 'コンテキスト',
+      website: 'ウェブサイト',
+      workflow: 'ワークフロー',
+      distribution: '配布',
+      access: 'アクセス',
+      usersRoles: 'ユーザーと役割',
+      tools: 'ツール',
+      statistics: '統計',
+      editorial: '編集',
+      publications: '出版物',
+      users: 'ユーザー',
+      openJournalSystems: 'オープンジャーナルシステム',
+      siteAdministration: 'サイト管理',
+      noNewNotifications: '新しい通知はありません',
+      logout: 'ログアウト',
+    },
+    settings: en.editor.settings,
+  },
 };
 

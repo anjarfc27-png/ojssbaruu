@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { createContext, useContext, useState, useEffect, useMemo, useCallback, ReactNode } from 'react';
 import { locales, defaultLocale, type Locale, LOCALE_STORAGE_KEY } from '@/lib/i18n/config';
 import { messages, type Messages } from '@/lib/i18n/messages';
 import { getNestedValue } from '@/lib/i18n/messages';
@@ -47,8 +47,8 @@ export function I18nProvider({ children }: { children: ReactNode }) {
     }
   };
 
-  // Translation function
-  const t = (key: string, params?: Record<string, string | number>): string => {
+  // Translation function - use useCallback to ensure it updates when locale changes
+  const t = useCallback((key: string, params?: Record<string, string | number>): string => {
     // Get messages for current locale, fallback to English if locale not found
     const currentMessages = messages[locale] || messages.en;
     let translated = getNestedValue(currentMessages, key);
@@ -66,11 +66,11 @@ export function I18nProvider({ children }: { children: ReactNode }) {
     }
     
     return translated;
-  };
+  }, [locale]);
 
   // Always provide context, even before mounted to prevent errors
   // Use default locale until mounted and localStorage is read
-  const contextValue = mounted 
+  const contextValue = useMemo(() => mounted 
     ? { locale, setLocale, t }
     : { 
         locale: defaultLocale, 
@@ -88,7 +88,7 @@ export function I18nProvider({ children }: { children: ReactNode }) {
           }
           return translated;
         }
-      };
+      }, [mounted, locale, setLocale, t]);
 
   return (
     <I18nContext.Provider value={contextValue}>

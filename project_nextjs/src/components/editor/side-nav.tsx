@@ -1,42 +1,47 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useAuth } from "@/contexts/AuthContext";
+import { useI18n } from "@/contexts/I18nContext";
 import { ChevronRight } from "lucide-react";
 
 // Navigation items structure matching OJS 3.3
 interface NavItem {
   label: string;
+  labelKey: string; // Translation key for the label
   href: string;
   submenu?: NavItem[];
 }
 
-const NAV_ITEMS: NavItem[] = [
-  { label: "Submissions", href: "/editor" },
-  { label: "Issues", href: "/editor/issues" },
-  { label: "Announcements", href: "/editor/announcements" },
+// Navigation items structure with translation keys
+const getNavItems = (t: (key: string) => string): NavItem[] => [
+  { label: t('editor.navigation.submissions'), labelKey: 'editor.navigation.submissions', href: "/editor" },
+  { label: t('editor.navigation.issues'), labelKey: 'editor.navigation.issues', href: "/editor/issues" },
+  { label: t('editor.navigation.announcements'), labelKey: 'editor.navigation.announcements', href: "/editor/announcements" },
   {
-    label: "Settings",
+    label: t('editor.navigation.settings'), 
+    labelKey: 'editor.navigation.settings',
     href: "/editor/settings/context",
     submenu: [
-      { label: "Context", href: "/editor/settings/context" },
-      { label: "Website", href: "/editor/settings/website" },
-      { label: "Workflow", href: "/editor/settings/workflow" },
-      { label: "Distribution", href: "/editor/settings/distribution" },
-      { label: "Access", href: "/editor/settings/access" },
+      { label: t('editor.navigation.context'), labelKey: 'editor.navigation.context', href: "/editor/settings/context" },
+      { label: t('editor.navigation.website'), labelKey: 'editor.navigation.website', href: "/editor/settings/website" },
+      { label: t('editor.navigation.workflow'), labelKey: 'editor.navigation.workflow', href: "/editor/settings/workflow" },
+      { label: t('editor.navigation.distribution'), labelKey: 'editor.navigation.distribution', href: "/editor/settings/distribution" },
+      { label: t('editor.navigation.access'), labelKey: 'editor.navigation.access', href: "/editor/settings/access" },
     ],
   },
-  { label: "Users & Roles", href: "/editor/users-roles" },
-  { label: "Tools", href: "/editor/tools" },
+  { label: t('editor.navigation.usersRoles'), labelKey: 'editor.navigation.usersRoles', href: "/editor/users-roles" },
+  { label: t('editor.navigation.tools'), labelKey: 'editor.navigation.tools', href: "/editor/tools" },
   {
-    label: "Statistics",
+    label: t('editor.navigation.statistics'), 
+    labelKey: 'editor.navigation.statistics',
     href: "/editor/statistics/editorial",
     submenu: [
-      { label: "Editorial", href: "/editor/statistics/editorial" },
-      { label: "Publications", href: "/editor/statistics/publications" },
-      { label: "Users", href: "/editor/statistics/users" },
+      { label: t('editor.navigation.editorial'), labelKey: 'editor.navigation.editorial', href: "/editor/statistics/editorial" },
+      { label: t('editor.navigation.publications'), labelKey: 'editor.navigation.publications', href: "/editor/statistics/publications" },
+      { label: t('editor.navigation.users'), labelKey: 'editor.navigation.users', href: "/editor/statistics/users" },
     ],
   },
 ];
@@ -45,7 +50,11 @@ export function EditorSideNav() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const { user } = useAuth();
+  const { t, locale } = useI18n();
   const [openSubmenus, setOpenSubmenus] = useState<Set<string>>(new Set());
+  
+  // Get navigation items with translations - re-compute when locale changes
+  const NAV_ITEMS = useMemo(() => getNavItems(t), [t, locale]);
 
   // Check if user has admin role
   const hasAdminRole = user?.roles?.some(r => r.role_path === "admin");
@@ -66,12 +75,12 @@ export function EditorSideNav() {
         initiallyOpen.add(item.label);
       }
       // Auto-expand Settings submenu when on any settings page
-      if (item.label === "Settings" && pathname?.startsWith("/editor/settings")) {
-        initiallyOpen.add(item.label);
+      if (item.labelKey === 'editor.navigation.settings' && pathname?.startsWith("/editor/settings")) {
+        initiallyOpen.add(item.labelKey);
       }
       // Auto-expand Statistics submenu when on any statistics page
-      if (item.label === "Statistics" && pathname?.startsWith("/editor/statistics")) {
-        initiallyOpen.add(item.label);
+      if (item.labelKey === 'editor.navigation.statistics' && pathname?.startsWith("/editor/statistics")) {
+        initiallyOpen.add(item.labelKey);
       }
     });
     if (initiallyOpen.size > 0) {
@@ -83,13 +92,13 @@ export function EditorSideNav() {
     }
   }, [pathname, searchParams]);
 
-  const toggleSubmenu = (label: string) => {
+  const toggleSubmenu = (labelKey: string) => {
     setOpenSubmenus(prev => {
       const next = new Set(prev);
-      if (next.has(label)) {
-        next.delete(label);
+      if (next.has(labelKey)) {
+        next.delete(labelKey);
       } else {
-        next.add(label);
+        next.add(labelKey);
       }
       return next;
     });
@@ -97,7 +106,7 @@ export function EditorSideNav() {
 
   const renderNavItem = (item: NavItem) => {
     const active = isActive(pathname, searchParams?.toString() ?? "", item.href);
-    const isSubmenuOpen = item.submenu ? openSubmenus.has(item.label) : false;
+    const isSubmenuOpen = item.submenu ? openSubmenus.has(item.labelKey) : false;
     const hasActiveSubmenu = item.submenu ? shouldExpandSubmenu(item) : false;
 
     return (
@@ -106,7 +115,7 @@ export function EditorSideNav() {
           <>
             {/* Parent item with submenu */}
             <button
-              onClick={() => toggleSubmenu(item.label)}
+              onClick={() => toggleSubmenu(item.labelKey)}
               className="pkp_nav_link"
               style={{
                 display: 'flex',

@@ -55,5 +55,31 @@ export const hi = {
   systemInfo: en.systemInfo,
   languages: en.languages,
   messages: en.messages,
+  
+  // Editor Navigation
+  editor: {
+    navigation: {
+      submissions: 'प्रस्तुतियां',
+      issues: 'अंक',
+      announcements: 'घोषणाएं',
+      settings: 'सेटिंग्स',
+      context: 'संदर्भ',
+      website: 'वेबसाइट',
+      workflow: 'कार्यप्रवाह',
+      distribution: 'वितरण',
+      access: 'पहुंच',
+      usersRoles: 'उपयोगकर्ता और भूमिकाएं',
+      tools: 'उपकरण',
+      statistics: 'आंकड़े',
+      editorial: 'संपादकीय',
+      publications: 'प्रकाशन',
+      users: 'उपयोगकर्ता',
+      openJournalSystems: 'ओपन जर्नल सिस्टम',
+      siteAdministration: 'साइट प्रशासन',
+      noNewNotifications: 'कोई नई सूचना नहीं',
+      logout: 'लॉगआउट',
+    },
+    settings: en.editor.settings,
+  },
 };
 
